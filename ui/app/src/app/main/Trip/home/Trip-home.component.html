@@ -1,0 +1,62 @@
+<o-form-layout-manager attr="Trip" mode="tab" title="TRIP">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="TripTable" 
+            service="Trip" 
+            entity="Trip" 
+            title="TRIP"
+            keys="id"
+            columns="id;end_location_id;start_location_id;vehicle_id;start_time;end_time" 
+            header-actions="R;D"
+            visible-columns="id;end_location_id;start_location_id;vehicle_id;start_time;end_time"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="end_location_id" title="end_location_id">
+    <o-table-cell-renderer-service attr="end_location_id" 
+        service="Location" entity="LocationType" columns="id;name"
+        parent-keys="id:end_location_id"
+        value-column="name" keys="end_location_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="start_location_id" title="start_location_id">
+    <o-table-cell-renderer-service attr="start_location_id" 
+        service="Location" entity="LocationType" columns="id;name"
+        parent-keys="id:start_location_id"
+        value-column="name" keys="start_location_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="vehicle_id" title="vehicle_id">
+    <o-table-cell-renderer-service attr="vehicle_id" 
+        service="Vehicle" entity="VehicleType" columns="id;id"
+        parent-keys="id:vehicle_id"
+        value-column="id" keys="vehicle_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #start_time attr="start_time" title="start_time" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #end_time attr="end_time" title="end_time" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

@@ -1,0 +1,557 @@
+about:
+  date: November 04, 2024 15:53:10
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Alert:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: alert_type
+      required: true
+      template: text
+      type: VARCHAR
+    - name: alert_date
+      required: true
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Alerts related to vehicles, such as maintenance needs or anomalies.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Alerts related to vehicles, such as maintenance needs or anomalies.
+    label: Alert
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: Alert
+  Checkpoint:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: location_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: route_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: sequence_number
+      required: true
+      template: integer
+      type: INTEGER
+    description: Checkpoints within a predefined route.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Checkpoints within a predefined route.
+    label: Checkpoint
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - location_id
+      name: location
+      resource: Location
+    - direction: toone
+      fks:
+      - route_id
+      name: route
+      resource: Route
+    type: Checkpoint
+  Driver:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: license_number
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents drivers who operate vehicles.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents drivers who operate vehicles.
+    label: Driver
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Driver
+  GpsDatum:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: latitude
+      required: true
+      template: real
+      type: FLOAT
+    - name: longitude
+      required: true
+      template: real
+      type: FLOAT
+    - name: timestamp
+      required: true
+      type: DATETIME
+    description: Stores GPS tracking data for vehicles.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Stores GPS tracking data for vehicles.
+    label: GpsDatum
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: GpsDatum
+  Location:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: latitude
+      required: true
+      template: real
+      type: FLOAT
+    - name: longitude
+      required: true
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents predefined locations of interest.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents predefined locations of interest.
+    label: Location
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - location_id
+      name: CheckpointList
+      resource: Checkpoint
+    - direction: tomany
+      fks:
+      - end_location_id
+      name: RouteList
+      resource: Route
+    - direction: tomany
+      fks:
+      - start_location_id
+      name: startRouteList
+      resource: Route
+    - direction: tomany
+      fks:
+      - end_location_id
+      name: TripList
+      resource: Trip
+    - direction: tomany
+      fks:
+      - start_location_id
+      name: startTripList
+      resource: Trip
+    type: Location
+  MaintenanceSchedule:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: scheduled_date
+      required: true
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Schedule for regular maintenance activities for vehicles.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Schedule for regular maintenance activities for vehicles.
+    label: MaintenanceSchedule
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: MaintenanceSchedule
+  Route:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: end_location_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: start_location_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents a predefined route for vehicles.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents a predefined route for vehicles.
+    label: Route
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - route_id
+      name: CheckpointList
+      resource: Checkpoint
+    - direction: toone
+      fks:
+      - end_location_id
+      name: end_location
+      resource: Location
+    - direction: toone
+      fks:
+      - start_location_id
+      name: start_location
+      resource: Location
+    type: Route
+  ServiceRecord:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: service_date
+      required: true
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Records of maintenance service for vehicles.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Records of maintenance service for vehicles.
+    label: ServiceRecord
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: ServiceRecord
+  Trip:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: end_location_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: start_location_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: start_time
+      required: true
+      type: DATETIME
+    - name: end_time
+      type: DATETIME
+    description: Represents a trip made by a vehicle.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents a trip made by a vehicle.
+    label: Trip
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - end_location_id
+      name: end_location
+      resource: Location
+    - direction: toone
+      fks:
+      - start_location_id
+      name: start_location
+      resource: Location
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: Trip
+  User:
+    columns:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      required: true
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents users of the system.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: username
+    home_template: home_template.html
+    info_list: Represents users of the system.
+    label: User
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserVehicleList
+      resource: UserVehicle
+    type: User
+  UserVehicle:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: user_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: vehicle_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Links users to the vehicles they are responsible for.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Links users to the vehicles they are responsible for.
+    label: UserVehicle
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: UserVehicle
+  Vehicle:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: make
+      required: true
+      template: text
+      type: VARCHAR
+    - name: model
+      required: true
+      template: text
+      type: VARCHAR
+    - name: year
+      template: integer
+      type: INTEGER
+    description: Represents vehicles being tracked.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Represents vehicles being tracked.
+    label: Vehicle
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: AlertList
+      resource: Alert
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: GpsDatumList
+      resource: GpsDatum
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: MaintenanceScheduleList
+      resource: MaintenanceSchedule
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: ServiceRecordList
+      resource: ServiceRecord
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: TripList
+      resource: Trip
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: UserVehicleList
+      resource: UserVehicle
+    type: Vehicle
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

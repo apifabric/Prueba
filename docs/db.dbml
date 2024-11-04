@@ -1,0 +1,123 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Alert: Alerts related to vehicles, such as maintenance needs or anomalies.
+Vehicle: Represents vehicles being tracked.
+Checkpoint: Checkpoints within a predefined route.
+Location: Represents predefined locations of interest.
+Route: Represents a predefined route for vehicles.
+Driver: Represents drivers who operate vehicles.
+GpsDatum: Stores GPS tracking data for vehicles.
+MaintenanceSchedule: Schedule for regular maintenance activities for vehicles.
+ServiceRecord: Records of maintenance service for vehicles.
+Trip: Represents a trip made by a vehicle.
+User: Represents users of the system.
+UserVehicle: Links users to the vehicles they are responsible for.
+'''
+}
+
+Table Alert {
+    id INTEGER [primary key]
+    vehicle_id INTEGER 
+    alert_type VARCHAR 
+    alert_date DATETIME 
+    description VARCHAR 
+    }
+
+Table Vehicle {
+    id INTEGER [primary key]
+    make VARCHAR 
+    model VARCHAR 
+    year INTEGER 
+    }
+
+Table Checkpoint {
+    id INTEGER [primary key]
+    route_id INTEGER 
+    location_id INTEGER 
+    sequence_number INTEGER 
+    }
+
+Table Location {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    latitude FLOAT 
+    longitude FLOAT 
+    }
+
+Table Route {
+    id INTEGER [primary key]
+    name VARCHAR 
+    start_location_id INTEGER 
+    end_location_id INTEGER 
+    }
+
+Table Driver {
+    id INTEGER [primary key]
+    name VARCHAR 
+    license_number VARCHAR 
+    }
+
+Table GpsDatum {
+    id INTEGER [primary key]
+    vehicle_id INTEGER 
+    latitude FLOAT 
+    longitude FLOAT 
+    timestamp DATETIME 
+    }
+
+Table MaintenanceSchedule {
+    id INTEGER [primary key]
+    vehicle_id INTEGER 
+    scheduled_date DATETIME 
+    description VARCHAR 
+    }
+
+Table ServiceRecord {
+    id INTEGER [primary key]
+    vehicle_id INTEGER 
+    service_date DATETIME 
+    description VARCHAR 
+    }
+
+Table Trip {
+    id INTEGER [primary key]
+    vehicle_id INTEGER 
+    start_location_id INTEGER 
+    end_location_id INTEGER 
+    start_time DATETIME 
+    end_time DATETIME 
+    }
+
+Table User {
+    id INTEGER [primary key]
+    username VARCHAR 
+    email VARCHAR 
+    }
+
+Table UserVehicle {
+    id INTEGER [primary key]
+    user_id INTEGER 
+    vehicle_id INTEGER 
+    }
+
+
+
+// Relationships
+    Ref: Alert.(vehicle_id) < Vehicle.(id)
+    Ref: Checkpoint.(location_id) < Location.(id)
+    Ref: Checkpoint.(route_id) < Route.(id)
+    Ref: Route.(end_location_id) < Location.(id)
+    Ref: Route.(start_location_id) < Location.(id)
+    Ref: GpsDatum.(vehicle_id) < Vehicle.(id)
+    Ref: MaintenanceSchedule.(vehicle_id) < Vehicle.(id)
+    Ref: ServiceRecord.(vehicle_id) < Vehicle.(id)
+    Ref: Trip.(end_location_id) < Location.(id)
+    Ref: Trip.(start_location_id) < Location.(id)
+    Ref: Trip.(vehicle_id) < Vehicle.(id)
+    Ref: UserVehicle.(user_id) < User.(id)
+    Ref: UserVehicle.(vehicle_id) < Vehicle.(id)

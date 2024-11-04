@@ -1,0 +1,51 @@
+<o-form-layout-manager attr="Route" mode="tab" title="ROUTE">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="RouteTable" 
+            service="Route" 
+            entity="Route" 
+            title="ROUTE"
+            keys="id"
+            columns="name;end_location_id;start_location_id;id" 
+            header-actions="R;D"
+            visible-columns="name;end_location_id;start_location_id;id"  
+            sort-columns="name" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #name attr="name" title=" name*" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column attr="end_location_id" title="end_location_id">
+    <o-table-cell-renderer-service attr="end_location_id" 
+        service="Location" entity="LocationType" columns="id;name"
+        parent-keys="id:end_location_id"
+        value-column="name" keys="end_location_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="start_location_id" title="start_location_id">
+    <o-table-cell-renderer-service attr="start_location_id" 
+        service="Location" entity="LocationType" columns="id;name"
+        parent-keys="id:start_location_id"
+        value-column="name" keys="start_location_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #id attr="id" title="id" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

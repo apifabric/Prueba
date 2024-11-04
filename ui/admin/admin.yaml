@@ -1,0 +1,379 @@
+about:
+  date: November 04, 2024 15:53:10
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 13
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Alert:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: vehicle_id
+      required: true
+    - name: alert_type
+      required: true
+    - name: alert_date
+      required: true
+      type: DATETIME
+    - name: id
+    description: Alerts related to vehicles, such as maintenance needs or anomalies.
+    info_list: Alerts related to vehicles, such as maintenance needs or anomalies.
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: Alert
+    user_key: description
+  Checkpoint:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: location_id
+      required: true
+    - name: route_id
+      required: true
+    - name: sequence_number
+      required: true
+    description: Checkpoints within a predefined route.
+    info_list: Checkpoints within a predefined route.
+    tab_groups:
+    - direction: toone
+      fks:
+      - location_id
+      name: location
+      resource: Location
+    - direction: toone
+      fks:
+      - route_id
+      name: route
+      resource: Route
+    type: Checkpoint
+    user_key: id
+  Driver:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: license_number
+      required: true
+    - name: id
+    description: Represents drivers who operate vehicles.
+    info_list: Represents drivers who operate vehicles.
+    type: Driver
+    user_key: name
+  GpsDatum:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: vehicle_id
+      required: true
+    - name: latitude
+      required: true
+    - name: longitude
+      required: true
+    - name: timestamp
+      required: true
+      type: DATETIME
+    description: Stores GPS tracking data for vehicles.
+    info_list: Stores GPS tracking data for vehicles.
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: GpsDatum
+    user_key: id
+  Location:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: latitude
+      required: true
+    - name: longitude
+      required: true
+    - name: id
+    description: Represents predefined locations of interest.
+    info_list: Represents predefined locations of interest.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - location_id
+      name: CheckpointList
+      resource: Checkpoint
+    - direction: tomany
+      fks:
+      - end_location_id
+      name: RouteList
+      resource: Route
+    - direction: tomany
+      fks:
+      - start_location_id
+      name: startRouteList
+      resource: Route
+    - direction: tomany
+      fks:
+      - end_location_id
+      name: TripList
+      resource: Trip
+    - direction: tomany
+      fks:
+      - start_location_id
+      name: startTripList
+      resource: Trip
+    type: Location
+    user_key: name
+  MaintenanceSchedule:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: vehicle_id
+      required: true
+    - name: scheduled_date
+      required: true
+      type: DATETIME
+    - name: id
+    description: Schedule for regular maintenance activities for vehicles.
+    info_list: Schedule for regular maintenance activities for vehicles.
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: MaintenanceSchedule
+    user_key: description
+  Route:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: end_location_id
+      required: true
+    - name: start_location_id
+      required: true
+    - name: id
+    description: Represents a predefined route for vehicles.
+    info_list: Represents a predefined route for vehicles.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - route_id
+      name: CheckpointList
+      resource: Checkpoint
+    - direction: toone
+      fks:
+      - end_location_id
+      name: end_location
+      resource: Location
+    - direction: toone
+      fks:
+      - start_location_id
+      name: start_location
+      resource: Location
+    type: Route
+    user_key: name
+  ServiceRecord:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: vehicle_id
+      required: true
+    - name: service_date
+      required: true
+      type: DATETIME
+    - name: id
+    description: Records of maintenance service for vehicles.
+    info_list: Records of maintenance service for vehicles.
+    tab_groups:
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: ServiceRecord
+    user_key: description
+  Trip:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: end_location_id
+      required: true
+    - name: start_location_id
+      required: true
+    - name: vehicle_id
+      required: true
+    - name: start_time
+      required: true
+      type: DATETIME
+    - name: end_time
+      type: DATETIME
+    description: Represents a trip made by a vehicle.
+    info_list: Represents a trip made by a vehicle.
+    tab_groups:
+    - direction: toone
+      fks:
+      - end_location_id
+      name: end_location
+      resource: Location
+    - direction: toone
+      fks:
+      - start_location_id
+      name: start_location
+      resource: Location
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: Trip
+    user_key: id
+  User:
+    attributes:
+    - label: ' username*'
+      name: username
+      required: true
+      search: true
+      sort: true
+    - name: email
+      required: true
+    - name: id
+    description: Represents users of the system.
+    info_list: Represents users of the system.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - user_id
+      name: UserVehicleList
+      resource: UserVehicle
+    type: User
+    user_key: username
+  UserVehicle:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: user_id
+      required: true
+    - name: vehicle_id
+      required: true
+    description: Links users to the vehicles they are responsible for.
+    info_list: Links users to the vehicles they are responsible for.
+    tab_groups:
+    - direction: toone
+      fks:
+      - user_id
+      name: user
+      resource: User
+    - direction: toone
+      fks:
+      - vehicle_id
+      name: vehicle
+      resource: Vehicle
+    type: UserVehicle
+    user_key: id
+  Vehicle:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: make
+      required: true
+    - name: model
+      required: true
+    - name: year
+    description: Represents vehicles being tracked.
+    info_list: Represents vehicles being tracked.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: AlertList
+      resource: Alert
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: GpsDatumList
+      resource: GpsDatum
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: MaintenanceScheduleList
+      resource: MaintenanceSchedule
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: ServiceRecordList
+      resource: ServiceRecord
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: TripList
+      resource: Trip
+    - direction: tomany
+      fks:
+      - vehicle_id
+      name: UserVehicleList
+      resource: UserVehicle
+    type: Vehicle
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
